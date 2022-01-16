@@ -64,4 +64,43 @@ Proof.
   inversion Hb.
 Qed.
 
-  
+Theorem andb_associative: forall(a b c : bool),
+  andb a (andb b c) = andb (andb a b) c.
+Proof.
+ intros [|] [|] [|]; simpl; reflexivity.
+ Qed.
+
+
+Theorem andb_commutative : forall(a b : bool),
+  andb a b = andb b a.
+Proof.
+  intros a b.
+  refine(
+      match a, b with
+        | true, true => eq_refl
+        | true, fase => eq_refl
+        | false, true => eq_refl
+        | false, false =>  eq_refl
+      end
+    ).
+Qed.
+
+
+Definition orb(b1 b2 : bool) : bool :=
+  match b1,b2 with
+    | false, false => false
+    | _,_ => true
+  end.
+
+Theorem andb_negb_orb: forall(a b : bool),
+  negb (andb a b) = orb (negb a) (negb b).
+Proof.
+  intros a b.
+  destruct a eqn:Ha.
+  destruct b eqn:Hb.
+  simpl.reflexivity.
+  simpl.reflexivity.
+  destruct b eqn:Hb.
+  simpl.reflexivity.
+  simpl.reflexivity.
+Qed.
